@@ -2,7 +2,7 @@
 set run=%1
 
 :: Commands Mapping
-if "%run%"=="-r"  set "cmd=python manage.py runserver"
+if "%run%"=="-r"  set "cmd=python manage.py runserver 2851"
 if "%run%"=="-R"  set "cmd=python -m gunicorn --reload --log-level debug wooden.asgi:application -k uvicorn.workers.UvicornWorker"
 if "%run%"=="-s"  set "cmd=python manage.py shell"
 if "%run%"=="-d"  set "cmd=docker run --rm -p 6379:6379 redis:latest"
