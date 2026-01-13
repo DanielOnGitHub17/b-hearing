@@ -48,25 +48,29 @@ INSTALLED_APPS = [
     "users",
 ]
 
-SITE_ID = 1
-
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-# Allauth specific settings
+# Site ID required by allauth
+SITE_ID = 1
+
+# Updated Allauth settings (2026 syntax)
 ACCOUNT_LOGIN_METHODS = {"email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*"] # The * makes it required
+ACCOUNT_SIGNUP_FIELDS = ["email*"]
 
-# Keep these as they are still valid/needed for passwordless
+# User Model and Password settings
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_PASSWORD_REQUIRED = True
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
+ACCOUNT_PASSWORD_REQUIRED = False
 
-# This ensures emails are printed to your terminal for testing
+# Verification flow
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
+
+# Developer settings
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
