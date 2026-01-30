@@ -24,7 +24,7 @@ class PowerAutomateEmailBackend(BaseEmailBackend):
         body = {
             "subject": subject,
             "recipient": recipients[0],
-            "message": message
+            "message": message.replace('\n', "<br>")
         }
         try:
             response = requests.post(self.api_url, json=body)
@@ -59,7 +59,7 @@ class PowerAutomateEmailBackend(BaseEmailBackend):
             return False
 
         recipients = [*map(self.prep_address, email_message.recipients())]
-        message = email_message.message(policy=None).as_string()
+        message = email_message.body
         subject = email_message.subject
         try:
             self.sendmail(subject, recipients, message)
