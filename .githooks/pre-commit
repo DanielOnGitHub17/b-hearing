@@ -1,20 +1,24 @@
 #!/bin/sh
 
-echo "Running checks before push..."
+printf "Running checks before commit...\n\n"
 
-echo "Checking migrations"
+printf "Checking migrations:\n"
 python manage.py makemigrations --check
 if [ $? -ne 0 ]; then
-    echo "Migrations need to be made. Push aborted."
+    printf "Migrations need to be made. Commit aborted.\n\n"
     exit 1
 fi
 
-echo "Running tests"
+printf "\n"
+
+printf "Running tests:\n\n"
 python manage.py test
 if [ $? -ne 0 ]; then
-    echo "Tests failed. Push aborted."
+    printf "Tests failed. Commit aborted.\n\n"
     exit 1
 fi
 
-echo "Checks passed. Pushing..."
+printf "\n"
+
+printf "Checks passed. Commiting...\n\n"
 exit 0

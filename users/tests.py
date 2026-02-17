@@ -1,10 +1,10 @@
 from django.test import TestCase
 
-from django.conf import settings
+from bhearing.settings import EMAIL_BACKEND
 
 # Create your tests here.
 
 
 class SettingsCheck(TestCase):
     def test_email_backend(self):
-        self.assertEndsWith(settings.EMAIL_BACKEND, "PowerAutomateEmailBackend")
+        self.assertEndsWith(EMAIL_BACKEND, "PowerAutomateEmailBackend")
