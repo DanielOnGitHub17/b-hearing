@@ -70,7 +70,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
 
 # Developer settings
-EMAIL_BACKEND = "users.email_backend.PowerAutomateEmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "users.email_backend.PowerAutomateEmailBackend"
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
 
 MIDDLEWARE = [
