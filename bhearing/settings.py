@@ -69,10 +69,13 @@ ACCOUNT_PASSWORD_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
 
+LOGIN_REDIRECT_URL = "/selections/"
 # Developer settings
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "users.email_backend.PowerAutomateEmailBackend"
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -90,7 +93,7 @@ ROOT_URLCONF = "bhearing.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -151,4 +154,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# For when you use whitenoise
+# STORAGES = {
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
