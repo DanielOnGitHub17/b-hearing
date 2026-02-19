@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://github.com/DanielOnGitHub17/DanielOnGitHub17.github.io/blob/main/funcs.js"></script>
+    <title>
+        Bible Hearing
+        {% block extra_title %}{% endblock %}
+    </title>
+    {% block styles %}
+    <!-- <link rel="stylesheet" href="{% static 'style.css' %}"> -->
+    {% endblock %}
+</head>
+
+<body>
+    {% block content %}
+    Hear the bible read aloud repeatedly
+    {% endblock %}
+</body>
+
+</html>
