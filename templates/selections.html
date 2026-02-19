@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_title %} | Selections{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'selections/style.css' %}">
+{% endblock %}{% block content %}
+
+<form action="/selections/" method="post">
+    <fieldset id="selection-information">
+        <legend>Details about Bible selection</legend>
+        <label>Selection label: <input type="text" name="label"></label>
+        <label>Voice to read in: <select id="voices" name="voice">
+                <!-- Check the browser's speech recognition and add the voices here -->
+            </select></label>
+        <label>Times to repeat: <input type="number" min=1 max=100 value=3 name="repeat"></label>
+        <label>Version: <select id="version" name="version">
+            </select></label>
+    </fieldset>
+
+    <fieldset>
+        <legend>Add verse ranges for selection form</legend>
+
+        <!-- Make a class for this so things can be handled well -->
+        <fieldset id="start-verse-form">
+            <legend>Select starting verse</legend>
+            <label>Select Book:
+                <select>
+                    <option>Genesis</option>
+                </select>
+            </label>
+            <label>Select Chapter:
+                <!-- Use number input cause list will be too long (think Psalms) -->
+                <input type="number" min=1 max=150 id="chapter-number">
+            </label>
+            <label>Select Verse:
+                <!-- Use number input cause list will be too long (think Psalms 119) -->
+                <input type="number" min=1 max=176 id="verse-number">
+            </label>
+        </fieldset>
+
+        <!-- Add end-verse-form  -->
+    </fieldset>
+
+    <fieldset id="verse-ranges">
+        <!-- will be created from a class -->
+        <div class="verse-range-spec">
+            <p class="verse-range-text">
+                <span class="start-verse">
+                    <input type="number" name="start" hidden>
+                </span>
+                <span class="end-verse">
+                    <input type="number" name="end" hidden>
+                </span>
+            </p>
+            <button type="button" class="remove-verse-range">-</button>
+
+        </div>
+
+    </fieldset>
+
+
+</form>
+<script src="{% static 'selections/form.js' %}"></script>
+{% endblock %}
