@@ -1,3 +1,7 @@
+"""Data Entities for Bible Hearing app
+start, end relate to verses
+"""
+
 from django.db import models
 
 from users.models import User
@@ -57,7 +61,7 @@ class Selection(models.Model):
     read_label = models.BooleanField(default=False)
 
 
-class Range(models.Model):
+class VerseRange(models.Model):
     start = models.ForeignKey(
         to=Verse, on_delete=models.CASCADE, related_name="start_range"
     )
@@ -68,7 +72,7 @@ class Range(models.Model):
 
 
 class Hidden(models.Model):
-    hidden = models.ForeignKey(to=Range, on_delete=models.CASCADE)
+    hidden = models.ForeignKey(to=VerseRange, on_delete=models.CASCADE)
     start = models.ForeignKey(
         to=Verse, on_delete=models.CASCADE, related_name="start_hidden"
     )
