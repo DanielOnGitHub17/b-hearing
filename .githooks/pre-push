@@ -1,5 +1,5 @@
 #!/bin/sh
-
+source ./env/Scripts/activate
 printf "Running checks before commit...\n\n"
 
 printf "Checking migrations:\n"
