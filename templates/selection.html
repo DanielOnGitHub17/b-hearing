@@ -1,0 +1,11 @@
+<!-- 
+Maybe have a UI component that you can edit a verse range by dragging on the edge as if you
+it's a window 
+-->
+{% extends "base.html" %}
+{% load static %}
+{% block extra_title %} | Selection{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'selection/style.css' %}">
+{% endblock %}{% block content %}
