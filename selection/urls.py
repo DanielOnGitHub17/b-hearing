@@ -3,5 +3,6 @@ from django.urls import path
 from selection import views
 
 urlpatterns = [
-    path("", views.SelectionView.as_view()),
+    path("", views.SelectionsView.as_view()),
+    path("<int:id>/", views.SelectionView.as_view()),
 ]
