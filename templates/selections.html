@@ -14,31 +14,14 @@
             </select></label>
         <label>Times to repeat: <input type="number" min=1 max=100 value=3 name="repeat"></label>
         <label>Version: <select id="version" name="version">
+                <option value="kjv">King James Version</option>
             </select></label>
     </fieldset>
 
     <fieldset id="verse-range-forms">
         <legend>Add verse ranges for selection form</legend>
 
-        <!-- Make a class for this so things can be handled well -->
-        <fieldset id="start-verse-form">
-            <legend>Select starting verse</legend>
-            <label>Select Book:
-                <select>
-                    <option>Genesis</option>
-                </select>
-            </label>
-            <label>Select Chapter:
-                <!-- Use number input cause list will be too long (think Psalms) -->
-                <input type="number" min=1 max=150 id="chapter-number">
-            </label>
-            <label>Select Verse:
-                <!-- Use number input cause list will be too long (think Psalms 119) -->
-                <input type="number" min=1 max=176 id="verse-number">
-            </label>
-        </fieldset>
-
-        <!-- Add end-verse-form  -->
+        <!-- Add start verse form and end verse form  -->
     </fieldset>
 
     <fieldset id="verse-ranges">
@@ -60,5 +43,5 @@
 
 
 </form>
-<script src="{% static 'selections/form.js' %}"></script>
+<script src="{% static 'selections/form.js' %}" type="module"></script>
 {% endblock %}
