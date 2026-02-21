@@ -8,7 +8,7 @@ from users.models import User
 
 
 class Verse(models.Model):
-    number = models.IntegerField(primary_key=True)  # Will start from 1 :)
+    number = models.IntegerField(primary_key=True)
     kjv = models.CharField(verbose_name="King James Version")
     gnb = models.CharField(verbose_name="Good News Bible", default="")
     # Add more versions as needed (Will require migrations. This is intended)
