@@ -22,7 +22,8 @@ function makeVerseRangeForms() {
 }
 
 configureEvents({
-    "load": [buildUI]
+    "load": [buildUI],
+    "change": [VerseRangeForm.event]
 });
 
 // build it twice for one and other

@@ -69,10 +69,13 @@ class VerseRangeForm {
         this.legend = add(make("legend", { textContent: `Select ${this.name}ing verse` }),
             this.container);
 
-        add(make("option", { disabled: true, required: true, value: "", textContent: "Choose a book from below" },
-            add(this.book = make("select", { required: true }),
+        add(make("option", { disabled: true, required: true, selected: true, value: "", textContent: "Choose a book from below" }),
+            this.book = add(make("select", { required: true }),
                 add(make("label", { textContent: "Select Book: " }),
-                    this.container))));
+                    this.container
+                )
+            )
+        );
 
         for (const book in books) add(make("option", { textContent: book }),
             this.book);
@@ -85,27 +88,27 @@ class VerseRangeForm {
     }
 
     static forms = [];
-    static event() {
-        addEventListener("change", e => {
-            const dom = e.target;
-            switch (dom.nodeName) {
-                case "select":
-                    const verseRange = dom.parentElement.parentElement.obj;
-                    verseRange.chapter.max = books[dom.value].length - 1;
-                    break;
+    static event(e) {
+        const dom = e.target;
+        let verseRange;
+        switch (dom.localName) {
+            case "select":
+                verseRange = dom.parentElement.parentElement.obj;
+                verseRange.chapter.max = books[dom.value].length - 1;
+                break;
 
-                case "input":
-                    if (dom.type !== "number") return;
-                    verseRange = dom.parentElement.parentElement.obj;
-                    if (verseRange.chapter == dom) verseRange.verse.max = books[dom.value][verseRange.book.value];
-                    break;
+            case "input":
+                if (dom.type !== "number") return;
+                verseRange = dom.parentElement.parentElement.obj;
+                if (!verseRange.book.value) verseRange.chapter.value = verseRange.verse.value = 0;
+                if (verseRange.chapter === dom) verseRange.verse.max = books[verseRange.book.value][+dom.value];
+                break;
 
-                default:
-                    break;
-            }
-        });
+            default:
+                break;
+        }
     }
 }
 
 
-export { VerseRangeForm }
+export { VerseRangeForm };
