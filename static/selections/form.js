@@ -1,4 +1,5 @@
-// alert("welcome");
+import { VerseRangeForm } from "./selections.js";
+
 const addVerseRange = get("add-verse-range");
 const verseRangeForms = get("verse-range-forms")
 const verseRanges = get("verse-ranges")
@@ -9,10 +10,19 @@ const verseRanges = get("verse-ranges")
 // User might want
 // For elsewhere: Selections should be editted the same way they are created.
 // The form will look the same.
-// Add validation for chapter based on Book and verse based on chapter. 
-onload = () => {
-    for (let x in ["start", "end"]) {
-        VerseRangeForm(x, verseRangeForms);
+// Add validation for chapter based on Book and verse based on chapter.
+function buildUI() {
+    makeVerseRangeForms();
+}
+
+function makeVerseRangeForms() {
+    for (let prop of ["start", "end"]) {
+        new VerseRangeForm(prop, verseRangeForms);
     }
 }
+
+configureEvents({
+    "load": [buildUI]
+});
+
 // build it twice for one and other
