@@ -100,8 +100,12 @@ class VerseRangeForm {
             case "input":
                 if (dom.type !== "number") return;
                 verseRange = dom.parentElement.parentElement.obj;
-                if (!verseRange.book.value) verseRange.chapter.value = verseRange.verse.value = 0;
-                if (verseRange.chapter === dom) verseRange.verse.max = books[verseRange.book.value][+dom.value];
+                if (!verseRange.book.value) {
+                    verseRange.chapter.value = verseRange.verse.value = 0;
+                    break;
+                }
+
+                if (verseRange.chapter === dom) verseRange.verse.max = books[verseRange.book.value][+dom.value]
                 break;
 
             default:
