@@ -67,9 +67,19 @@ const books = {
     "Revelation": [0, 20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21]
 };
 
-// const verseNoPrefixSum = Object.
+const verseNoPrefixSum = {};
+let versesCount = 0;
+for (const book in books) {
+    verseNoPrefixSum[book] = [versesCount]
+    for (let chapter = 1; chapter < books[book].length; chapter++) {
+        versesCount += books[book][chapter];
+        verseNoPrefixSum[book].push(versesCount);
+    }
+}
 // use first of array for storing storage up to
 // then do ps of all
 // get by...
-
-export { books };
+for (const book in verseNoPrefixSum) {
+    console.log(book, verseNoPrefixSum[book]);
+}
+export { books, verseNoPrefixSum };
