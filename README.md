@@ -9,3 +9,5 @@
 ### Notes.
 - The bible omits some chapters. It'll be a bit difficult to parse directly
 
+- Found that the ebook is not complete. missing ~22 verses...
+- If I find more complete text, I might have to redo everything: JSONs, DB creation, etc.
