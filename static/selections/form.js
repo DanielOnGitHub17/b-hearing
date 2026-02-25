@@ -1,8 +1,10 @@
 import { VerseRangeForm } from "./selections.js";
+import { make } from "../util.js";
 
 const addVerseRange = get("add-verse-range");
 const verseRangeForms = get("verse-range-forms")
 const verseRanges = get("verse-ranges")
+
 
 // Use a field set
 // check that verse range doesn't start AND end from the same place
@@ -12,26 +14,26 @@ const verseRanges = get("verse-ranges")
 // The form will look the same.
 // Add validation for chapter based on Book and verse based on chapter.
 function buildUI() {
-    makeVerseRangeForms();
-    add(make("button", { id: "create-verse-range", type: "button", textContent: "hisdfs" }), verseRangeForms);
-}
-
-function makeVerseRangeForms() {
+    // make verse range forms
     for (let prop of ["start", "end"]) {
         new VerseRangeForm(prop, verseRangeForms);
     }
+
+    // add button to create verse range
+    add(make("button", { id: "create-verse-range", textContent: '+', type: "button" }), verseRangeForms);
 }
+
 
 function createVerseRange(e) {
     if (e.target.id !== "create-verse-range") return;
-
+    e.preventDefault();
+    VerseRangeForm.forms.map(vrf => vrf.verseValue)
 }
 
 configureEvents({
     "load": [buildUI],
     "change": [VerseRangeForm.event],
     "click": [createVerseRange],
-    "submit": [],
 });
 
 // build it twice for one and other

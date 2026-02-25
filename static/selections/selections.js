@@ -1,10 +1,5 @@
 import { books } from "./consts.js";
-
-function make(name = "div", attrs = {}) {
-    const dom = document.createElement(name);
-    for (const attr in attrs) dom[attr] = attrs[attr];
-    return dom;
-}
+import { make } from "../util.js";
 
 class Verse {
     constructor(book, chapter, verse, number, rangeType, parentElement) {
@@ -52,8 +47,8 @@ class VerseRangeForm {
         VerseRangeForm.forms.push(this);
     }
 
-    get verseValues() {
-        if (!this.book.value) return;
+    get verseValue() {
+        if (!this.book.value) return 0;
 
     }
 
