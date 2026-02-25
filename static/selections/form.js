@@ -13,6 +13,7 @@ const verseRanges = get("verse-ranges")
 // Add validation for chapter based on Book and verse based on chapter.
 function buildUI() {
     makeVerseRangeForms();
+    add(make("button", { id: "create-verse-range", type: "button", textContent: "hisdfs" }), verseRangeForms);
 }
 
 function makeVerseRangeForms() {
@@ -21,9 +22,16 @@ function makeVerseRangeForms() {
     }
 }
 
+function createVerseRange(e) {
+    if (e.target.id !== "create-verse-range") return;
+
+}
+
 configureEvents({
     "load": [buildUI],
-    "change": [VerseRangeForm.event]
+    "change": [VerseRangeForm.event],
+    "click": [createVerseRange],
+    "submit": [],
 });
 
 // build it twice for one and other
