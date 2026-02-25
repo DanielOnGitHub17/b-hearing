@@ -1,4 +1,4 @@
-import { books } from "./books.js";
+import { books } from "./consts.js";
 
 function make(name = "div", attrs = {}) {
     const dom = document.createElement(name);
@@ -26,16 +26,8 @@ class Verse {
         this.input.value = number;
     }
 }
-/* 
-           <div class="verse-range-spec">
-               <p class="verse-range-text">
-                   <span class="verse"><input type="number" name="start" hidden></span>
-                   <span class="verse"><input type="number" name="end" hidden></span>
-               </p>
-               
-               
-               <button type="button" class="remove-verse-range">-</button>
-           </div>*/
+
+
 class VerseRange {
     constructor(start, end, parentElement) {
         /* start and end are Verses*/
@@ -52,11 +44,17 @@ class VerseRange {
     }
 }
 
+
 class VerseRangeForm {
     constructor(name, parentElement) {
         [this.name, this.parentElement] = arguments;
         this.build();
         VerseRangeForm.forms.push(this);
+    }
+
+    get verseValues() {
+        if (!this.book.value) return;
+
     }
 
     build() {
