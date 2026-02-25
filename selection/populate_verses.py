@@ -41,30 +41,31 @@ def process_pg_json():
     verse_counts = {}
     with open(r"..\b-hearing\bible-data\kjv.json") as bible_file:
         data = json.load(bible_file)
-        for book_index, book in enumerate(data):
-            bible.append([])
-            verse_counts[BOOKS[book_index]] = []
-            chapter_no = 0
-            verse_no = 0
-            for verse in book:
-                first_space = verse.find(" ")
-                ch_v = verse[:first_space].split(":")
-                if not all(map(str.isdecimal, ch_v)):
-                    continue
 
-                for ch_v, verse in zip(
-                    re.findall(SPLIT_VERSE, verse), re.split(SPLIT_VERSE, verse)[1:]
-                ):
-                    new_chapter_no, new_verse_no = [*map(int, ch_v.split(":"))]
-                    if chapter_no != new_chapter_no:
-                        bible[-1].append([])
-                        chapter_no = new_chapter_no
-                        verse_counts[BOOKS[book_index]].append(verse_no)
+    for book_index, book in enumerate(data):
+        bible.append([])
+        verse_counts[BOOKS[book_index]] = []
+        chapter_no = 0
+        verse_no = 0
+        for verse in book:
+            first_space = verse.find(" ")
+            ch_v = verse[:first_space].split(":")
+            if not all(map(str.isdecimal, ch_v)):
+                continue
 
-                    bible[-1][-1].append(verse.strip())
-                    verse_no = new_verse_no
+            for ch_v, verse in zip(
+                re.findall(SPLIT_VERSE, verse), re.split(SPLIT_VERSE, verse)[1:]
+            ):
+                new_chapter_no, new_verse_no = [*map(int, ch_v.split(":"))]
+                if chapter_no != new_chapter_no:
+                    bible[-1].append([])
+                    chapter_no = new_chapter_no
+                    verse_counts[BOOKS[book_index]].append(verse_no)
 
-            verse_counts[BOOKS[book_index]].append(verse_no)
+                bible[-1][-1].append(verse.strip())
+                verse_no = new_verse_no
+
+        verse_counts[BOOKS[book_index]].append(verse_no)
 
     with open(r"..\b-hearing\bible-data\kjv_curated.json", "w") as bible_file:
         print(len(bible), len(bible[0]))
@@ -124,3 +125,5 @@ def init_bible_db(version, src_path):
 if __name__ == "__main__":
     process_pg_json()
     # init_bible_db("kjv", r"C:\Users\enesi\Code\b-hearing\bible-data\kjv_curated.json")
+    # start 2:58, end = 3:02:53
+    # 65 1189 31081 - should be 31102! missing 21
