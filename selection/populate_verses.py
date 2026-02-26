@@ -3,11 +3,11 @@ Docstring for selection.populate_verses
 """
 
 import json
-from importlib import reload
 import re
+from importlib import reload
 
-from .models import Book, Chapter, Verse
 from .consts import BOOKS, FULL_TO_ABBR
+from .models import Book, Verse
 
 # Note: \b-hearing\bible-data\corpus\eng-engkjv.txt for kjv
 # kjv verses = 31170
@@ -19,34 +19,14 @@ SPLIT_VERSE = re.compile("[0-9]+:[0-9]+")
 
 
 def process_pg_json():
-    """
-    kjv: 31,102
-    Used this to get the json after deleting some element nodes
-    JSON.stringify($$(".chapter").map(
-    i=>[...i.getElementsByTagName("p")].map(
-    j=>j.textContent.trim().replaceAll('\n',' '))))
-    "5:6 And Seth lived an hundred and five years, and begat Enos: 5:7 And Seth lived after he begat Enos eight hundred and seven years, and begat sons and daughters: 5:8 And all the days of Seth were nine hundred and twelve years: and he died.",
-    note how verses are spread accross. take note of that to make more verses.
-    Output:
-    [
-        [ # book
-            ["verse"], # chapters
-        ],
-        [
-            [],
-        ],
-    ]
-    """
-    bible = []
+    bible = {}
     verse_counts = {}
     with open(r"..\b-hearing\bible-data\kjv.json") as bible_file:
         data = json.load(bible_file)
 
     for book_index, book in enumerate(data):
-        bible.append([])
-        verse_counts[BOOKS[book_index]] = []
-        chapter_no = 0
-        verse_no = 0
+        bible[BOOKS[book_index]], verse_counts[BOOKS[book_index]] = {}, {}
+        prev_chapter_no, prev_verse_no = 0, 0
         for verse in book:
             first_space = verse.find(" ")
             ch_v = verse[:first_space].split(":")
@@ -56,19 +36,18 @@ def process_pg_json():
             for ch_v, verse in zip(
                 re.findall(SPLIT_VERSE, verse), re.split(SPLIT_VERSE, verse)[1:]
             ):
-                new_chapter_no, new_verse_no = [*map(int, ch_v.split(":"))]
-                if chapter_no != new_chapter_no:
-                    bible[-1].append([])
-                    chapter_no = new_chapter_no
-                    verse_counts[BOOKS[book_index]].append(verse_no)
+                chapter_no, verse_no = [*map(int, ch_v.split(":"))]
+                if chapter_no != prev_chapter_no:
+                    bible[BOOKS[book_index]][chapter_no] = {}
+                    verse_counts[BOOKS[book_index]][prev_chapter_no] = prev_verse_no
+                    prev_chapter_no = chapter_no
 
-                bible[-1][-1].append(verse.strip())
-                verse_no = new_verse_no
+                bible[BOOKS[book_index]][chapter_no][verse_no] = verse.strip()
+                prev_chapter_no, prev_verse_no = chapter_no, verse_no
 
-        verse_counts[BOOKS[book_index]].append(verse_no)
+        verse_counts[BOOKS[book_index]][chapter_no] = verse_no
 
     with open(r"..\b-hearing\bible-data\kjv_curated.json", "w") as bible_file:
-        print(len(bible), len(bible[0]))
         json.dump(bible, bible_file)
 
     with open(
