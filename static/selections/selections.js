@@ -1,9 +1,10 @@
 import { make } from "../util.js";
-import { books } from "./consts.js";
+import { books, indexBook } from "./consts.js";
 
 class Verse {
     constructor(book, chapter, verse, rangeType) {
-        [this.book, this.chapter, this.verse, this.rangeType] = [book, chapter, verse, rangeType];
+        [this.chapter, this.verse, this.rangeType] = [chapter, verse, rangeType];
+        this.book = books[book].index;
     }
 
     build(parent) {
@@ -17,7 +18,8 @@ class Verse {
     }
 
     write(book, chapter, verse) {
-        this.container.textContent = `${this.book = book ?? this.book}
+        if (book) this.book = books[book].index;
+        this.container.textContent = `${indexBook[this.book]}
             ${this.chapter = chapter ?? this.chapter}:${this.verse = verse ?? this.verse}`;
     }
 }
@@ -50,6 +52,11 @@ class VerseRangeForm {
     get verseQuery() {
         if (!this.book.value) return;
         // do checks and throw error if not valid
+        for (const input of this.container.querySelectorAll("input, select")) {
+            if (!input.reportValidity()) {
+                throw "Errors in input";
+            }
+        };
         return [this.book.value, this.chapter.value, this.verse.value];
 
     }
@@ -89,7 +96,7 @@ class VerseRangeForm {
         switch (dom.localName) {
             case "select":
                 verseRange = dom.parentElement.parentElement.obj;
-                verseRange.chapter.max = Object.keys(books[dom.value]).length - 1;
+                verseRange.chapter.max = Object.keys(books[dom.value]).length - 2;
                 break;
 
             case "input":
@@ -100,7 +107,7 @@ class VerseRangeForm {
                     break;
                 }
 
-                if (verseRange.chapter === dom) verseRange.verse.max = books[verseRange.book.value][+dom.value]
+                if (verseRange.chapter === dom) verseRange.verse.max = books[verseRange.book.value][dom.value]
                 break;
 
             default:

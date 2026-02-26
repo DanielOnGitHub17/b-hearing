@@ -37,9 +37,9 @@ function createVerseRange(e) {
 }
 
 configureEvents({
-    "load": [buildUI],
     "change": [VerseRangeForm.event],
     "click": [createVerseRange],
+    "load": [buildUI],
 });
 
 // build it twice for one and other
