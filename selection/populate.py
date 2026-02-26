@@ -67,34 +67,28 @@ def copy_all_verses(src_path, out_path):
 
 
 def create_books():
-    for book in BOOKS:
-        Book()
+    for book_no, book in enumerate(BOOKS, start=1):
+        Book(
+            number=book_no,
+            name=book,
+            abbreviation=FULL_TO_ABBR[book],
+        ).save()
 
 
-def init_bible_db(version, src_path):
+def init_bible_verses(src_path):
     with open(src_path) as bible_file:
         bible = json.load(bible_file)
 
-    verse_no, chapter_no = 0, 0
-    for book_no, book in enumerate(bible):
-        start_chapter, start_book_verse = chapter_no, verse_no
-        for chapter in book:
-            start_verse = verse_no
-            for verse in chapter:
-                verse_obj = Verse(number=verse_no)
-                setattr(verse_obj, version, verse)
-                verse_obj.save()
-                verse_no += 1
-
-            chapter_obj = Chapter(
-                number=chapter_no,
-                start=Verse.objects.get(number=start_verse),
-                end=verse_obj,
-            )
-            chapter_obj.save()
-            chapter_no += 1
-
-    print(book_no, chapter_no, verse_no)
+    for book, chapters in bible.items():
+        for ch_no, verses in chapters.items():
+            chapter_no = int(ch_no)
+            for verse_no, verse in verses.items():
+                Verse(
+                    book=Book.objects.get(name=book),
+                    chapter=chapter_no,
+                    verse=int(verse_no),
+                    kjv=verse,
+                ).save()
 
 
 if __name__ == "__main__":
