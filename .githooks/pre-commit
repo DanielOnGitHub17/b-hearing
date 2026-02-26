@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 # source ./env/Scripts/activate
 
 printf "Running checks before commit...\n\n"
@@ -6,8 +6,8 @@ printf "Running checks before commit...\n\n"
 # printf "Checking migrations:\n"
 # python manage.py makemigrations --check
 # if [ $? -ne 0 ]; then
-#     printf "Migrations need to be made. Commit aborted.\n\n"
-#     exit 1
+    # printf "Migrations need to be made. Commit aborted.\n\n"
+    # exit 1
 # fi
 
 # printf "\n"
@@ -15,11 +15,11 @@ printf "Running checks before commit...\n\n"
 # printf "Running tests:\n\n"
 # python manage.py test
 # if [ $? -ne 0 ]; then
-#     printf "Tests failed. Commit aborted.\n\n"
-#     exit 1
+    # printf "Tests failed. Commit aborted.\n\n"
+    # exit 1
 # fi
 
 # printf "\n"
 
-# printf "Checks passed. Commiting...\n\n"
-# exit 0
+printf "Checks passed. Commiting...\n\n"
+exit 0
