@@ -58,6 +58,7 @@ SITE_ID = 1
 
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*"]
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[BHearing] "
 
 # User Model and Password settings
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -67,10 +68,11 @@ ACCOUNT_PASSWORD_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "/accounts/login/"
 
+
 LOGIN_REDIRECT_URL = "/selections/"
 # Developer settings
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "users.email_backend.PowerAutomateEmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 POWER_AUTOMATE_URL = os.getenv("POWER_AUTOMATE_URL")
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "http"
