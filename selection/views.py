@@ -2,11 +2,13 @@
 
 # from django.contrib.auth.decorators import login_required
 
+from collections import defaultdict
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.views import View
 
-from .models import Selection, VerseRange
+from .models import Selection, Verse, VerseRange
 
 
 class SelectionView(LoginRequiredMixin, View):
@@ -17,8 +19,10 @@ class SelectionView(LoginRequiredMixin, View):
         return redirect(request.path)
 
     def get(self, request, id):
-        selection = Selection.objects.get(id)
-        return render(request, "selection.html", context=selection)
+        selection = Selection.objects.get(id=id)
+        verses_ranges = [*VerseRange.objects.filter(selection=selection)]
+        print(verses_ranges)
+        return render(request, "selection.html", context={"ranges": verses_ranges})
 
 
 class SelectionsView(LoginRequiredMixin, View):
@@ -26,17 +30,29 @@ class SelectionsView(LoginRequiredMixin, View):
         """Will create a selection from the multiple VerseRanges given"""
         # Todo: Create ModelForm for Selection verification
         data = request.POST
-        verse_starts, verse_ends = [*map(request.POST.getlist, ("start", "end"))]
+        options = {"start": [], "end": []}
+        props = ["book", "chapter", "verse"]
+
+        for range_type, vals in options.items():
+            for opt_vals in zip(
+                *[data.getlist(f"{range_type}_{prop}") for prop in props]
+            ):
+                vals.append(dict(zip(props, opt_vals)))
+
         new_selection = Selection(
             user=request.user,
             label=data.get("label"),
-            voice=data.get("voice"),
             repeat=data.get("repeat"),
             version=data.get("version"),
         )
         new_selection.save()
-        for start_verse, end_verse in zip(verse_starts, verse_ends):
-            VerseRange(start=start_verse, end=end_verse, selection=new_selection).save()
+
+        for starts, ends in zip(*options.values()):
+            VerseRange(
+                start=Verse.objects.get(**starts),
+                end=Verse.objects.get(**ends),
+                selection=new_selection,
+            ).save()
 
         return redirect(f"/selections/{new_selection.id}/")
 
