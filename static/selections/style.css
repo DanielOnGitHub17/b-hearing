@@ -1,6 +1,19 @@
+body {
+    --b-color: rgb(41, 41, 41);
+    background-color: var(--b-color);
+    color: white;
+}
+
 form {
     display: flex;
     flex-flow: column;
+}
+
+input,
+select {
+    background-color: var(--b-color);
+    color: white;
+    border-color: white;
 }
 
 label {
@@ -15,4 +28,10 @@ label {
 .verse-form {
     display: flex;
     flex-flow: row;
+}
+
+#verse-range-text {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
 }

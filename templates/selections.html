@@ -6,6 +6,7 @@
 {% endblock %}{% block content %}
 
 <form action="/selections/" method="post">
+    {% csrf_token %}
     <fieldset id="selection-information">
         <legend>Details about Bible selection</legend>
         <label>Selection label: <input type="text" name="label"></label>
@@ -20,23 +21,16 @@
 
     <fieldset id="verse-range-forms">
         <legend>Add verse ranges for selection form</legend>
+        <p class="error"></p>
 
         <!-- Add start verse form and end verse form  -->
     </fieldset>
 
     <fieldset id="verse-ranges">
         <!-- will be created from a class -->
-        <div class="verse-range-spec">
-            <p class="verse-range-text">
-                <span class="start-verse">
-                    <input type="number" name="start" hidden>
-                </span>
-                <span class="end-verse">
-                    <input type="number" name="end" hidden>
-                </span>
-            </p>
-        </div>
-
+    </fieldset>
+    <fieldset>
+        <input type="submit" value="Create Selection">
     </fieldset>
 
 

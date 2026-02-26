@@ -1,54 +1,56 @@
-import { books } from "./consts.js";
 import { make } from "../util.js";
+import { books } from "./consts.js";
 
 class Verse {
-    constructor(book, chapter, verse, number, rangeType, parentElement) {
-        for (const prop of arguments) this[prop] = arguments[prop];
-        // this.build();
+    constructor(book, chapter, verse, rangeType) {
+        [this.book, this.chapter, this.verse, this.rangeType] = [book, chapter, verse, rangeType];
     }
 
-    build() {
-        add(this.container = make("span", { className: "verse", obj: this }),
-            this.parentElement);
-        add(this.input = make("input", { type: "number", name: this.rangeType, hidden: true }),
-            this.container);
+    build(parent) {
+        this.container = add(make("span", { className: `verse ${this.rangeType}`, obj: this }), parent);
         this.write();
+
+        for (const prop of ["book", "chapter", "verse"]) {
+            add(make("input", { name: `${this.rangeType}_${prop}`, hidden: true, value: this[prop] }), this.container);
+        }
+
     }
 
-    write(book, chapter, verse, number) {
+    write(book, chapter, verse) {
         this.container.textContent = `${this.book = book ?? this.book}
             ${this.chapter = chapter ?? this.chapter}:${this.verse = verse ?? this.verse}`;
-        this.input.value = number;
     }
 }
 
 
 class VerseRange {
     constructor(start, end, parentElement) {
-        /* start and end are Verses*/
-        for (const prop of arguments) this[prop] = arguments[prop];
+        [this.start, this.end, this.parentElement] = [start, end, parentElement]
         this.build();
+        VerseRange.ranges.push(this)
     }
 
     build() {
-        add(this.container = make("div", { className: "verse-range-spec", obj: this }),
-            this.parentElement);
-
-        add(this.verseRangeText = make("p", { className: "verse-range-text" }),
-            this.container);
+        this.container = add(make("div", { className: "verse-range-spec", obj: this }), this.parentElement);
+        this.verseRangeText = add(make("p", { className: "verse-range-text" }), this.container);
+        for (const verse of [this.start, this.end]) verse.build(this.verseRangeText);
     }
+
+    static ranges = [];
 }
 
 
 class VerseRangeForm {
     constructor(name, parentElement) {
-        [this.name, this.parentElement] = arguments;
+        [this.name, this.parentElement] = [name, parentElement];
         this.build();
         VerseRangeForm.forms.push(this);
     }
 
-    get verseValue() {
-        if (!this.book.value) return 0;
+    get verseQuery() {
+        if (!this.book.value) return;
+        // do checks and throw error if not valid
+        return [this.book.value, this.chapter.value, this.verse.value];
 
     }
 
@@ -87,7 +89,7 @@ class VerseRangeForm {
         switch (dom.localName) {
             case "select":
                 verseRange = dom.parentElement.parentElement.obj;
-                verseRange.chapter.max = books[dom.value].length - 1;
+                verseRange.chapter.max = Object.keys(books[dom.value]).length - 1;
                 break;
 
             case "input":
@@ -108,4 +110,4 @@ class VerseRangeForm {
 }
 
 
-export { VerseRangeForm };
+export { Verse, VerseRange, VerseRangeForm };
