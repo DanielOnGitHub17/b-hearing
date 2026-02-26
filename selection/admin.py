@@ -1,9 +1,7 @@
 from django.contrib import admin
 
-from .models import Book, Chapter, Verse
-
-# Register your models here.
+from .models import Book, Hidden, Selection, Verse, VerseRange
 
 
-for model in Verse, Chapter, Book:
+for model in Book, Hidden, Selection, Verse, VerseRange:
     admin.site.register(model)

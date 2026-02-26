@@ -7,8 +7,17 @@ from django.db import models
 from users.models import User
 
 
-class Verse(models.Model):
+class Book(models.Model):
     number = models.IntegerField(primary_key=True)
+    name = models.CharField(unique=True)
+    abbreviation = models.CharField(unique=True, max_length=10)
+    description = models.CharField(max_length=2000)
+
+
+class Verse(models.Model):
+    book = models.ForeignKey(to=Book, on_delete=models.CASCADE, default=None)
+    chapter = models.IntegerField(default=0)
+    verse = models.IntegerField(default=0)
     kjv = models.CharField(verbose_name="King James Version")
     gnb = models.CharField(verbose_name="Good News Bible", default="")
     # Add more versions as needed (Will require migrations. This is intended)
@@ -19,37 +28,6 @@ class Verse(models.Model):
     # Or I wonder if I can cheat mysql/sqlite with a biginteger
     # having base as the length of the vector
     # Might be able to run cosine similarity on that
-
-
-class Chapter(models.Model):
-    number = models.IntegerField(primary_key=True)
-    description = models.CharField(max_length=100)
-    start = models.OneToOneField(
-        to=Verse, on_delete=models.CASCADE, related_name="start_chapter"
-    )
-    end = models.OneToOneField(
-        to=Verse, on_delete=models.CASCADE, related_name="end_chapter"
-    )
-
-
-class Book(models.Model):
-    number = models.IntegerField(primary_key=True)
-    name = models.CharField(unique=True)
-    abbreviation = models.CharField(unique=True, max_length=10)  # 10?
-    description = models.CharField(max_length=2000)
-
-    start = models.OneToOneField(
-        to=Verse, on_delete=models.CASCADE, related_name="start_book"
-    )
-    end = models.OneToOneField(
-        to=Verse, on_delete=models.CASCADE, related_name="end_book"
-    )
-    start_chapter = models.OneToOneField(
-        to=Chapter, on_delete=models.CASCADE, related_name="start_book"
-    )
-    end_chapter = models.OneToOneField(
-        to=Chapter, on_delete=models.CASCADE, related_name="end_book"
-    )
 
 
 class Selection(models.Model):
