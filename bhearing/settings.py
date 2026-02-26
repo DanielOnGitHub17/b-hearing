@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
-
 import dotenv
 
 dotenv.load_dotenv()
@@ -57,7 +56,6 @@ AUTHENTICATION_BACKENDS = [
 # Site ID required by allauth
 SITE_ID = 1
 
-# Updated Allauth settings (2026 syntax)
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*"]
 

@@ -69,3 +69,23 @@ FULL_TO_ABBR = {
 
 ABBR_TO_FULL = {abbr: full for full, abbr in FULL_TO_ABBR.items()}
 BOOKS = [*FULL_TO_ABBR.keys()]
+
+"""
+
+kjv: 31,102
+Used this to get the json after deleting some element nodes
+JSON.stringify($$(".chapter").map(
+i=>[...i.getElementsByTagName("p")].map(
+j=>j.textContent.trim().replaceAll('\n',' '))))
+"5:6 And Seth lived an hundred and five years, and begat Enos: 5:7 And Seth lived after he begat Enos eight hundred and seven years, and begat sons and daughters: 5:8 And all the days of Seth were nine hundred and twelve years: and he died.",
+note how verses are spread accross. take note of that to make more verses.
+Output:
+[
+    [ # book
+        ["verse"], # chapters
+    ],
+    [
+        [],
+    ],
+]
+"""
