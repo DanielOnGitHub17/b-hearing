@@ -33,7 +33,7 @@ class Verse(models.Model):
 class Selection(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     label = models.CharField(unique=True)
-    voice = models.CharField()
+    voice = models.CharField(default="default")
     repeat = models.IntegerField()
     version = models.CharField()
     read_label = models.BooleanField(default=False)
