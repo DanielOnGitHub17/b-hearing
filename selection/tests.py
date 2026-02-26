@@ -2,7 +2,7 @@ from django.test import TestCase
 
 # Create your tests here.
 
-from .populate_verses import init_bible_db
+from .populate import init_bible_db
 
 
 class TestInitDB(TestCase):

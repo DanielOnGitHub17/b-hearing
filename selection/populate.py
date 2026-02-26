@@ -7,6 +7,7 @@ import re
 from importlib import reload
 
 from .consts import BOOKS, FULL_TO_ABBR
+
 from .models import Book, Verse
 
 # Note: \b-hearing\bible-data\corpus\eng-engkjv.txt for kjv
@@ -65,6 +66,11 @@ def copy_all_verses(src_path, out_path):
                 out.write(src.readline())
 
 
+def create_books():
+    for book in BOOKS:
+        Book()
+
+
 def init_bible_db(version, src_path):
     with open(src_path) as bible_file:
         bible = json.load(bible_file)
@@ -87,16 +93,6 @@ def init_bible_db(version, src_path):
             )
             chapter_obj.save()
             chapter_no += 1
-
-        Book(
-            number=book_no,
-            name=BOOKS[book_no],
-            abbreviation=FULL_TO_ABBR[BOOKS[book_no]],
-            start=Verse.objects.get(number=start_book_verse),
-            end=verse_obj,
-            start_chapter=Chapter.objects.get(number=start_chapter),
-            end_chapter=chapter_obj,
-        ).save()
 
     print(book_no, chapter_no, verse_no)
 
