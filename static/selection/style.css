@@ -21,9 +21,9 @@ body {
 }
 
 .chapter::after {
-    /* content: ':'; */
+    content: ':';
 }
 
 .verse::after {
-    /* content: ','; */
+    content: '.';
 }
