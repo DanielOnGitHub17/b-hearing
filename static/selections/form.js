@@ -1,4 +1,3 @@
-import { make } from "../util.js";
 import { Verse, VerseRange, VerseRangeForm } from "./selections.js";
 
 const addVerseRange = get("add-verse-range");
