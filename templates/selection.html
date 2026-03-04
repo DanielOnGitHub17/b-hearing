@@ -10,6 +10,28 @@ it's a window that you're reducing the size of.
 <link rel="stylesheet" href="{% static 'selection/style.css' %}">
 {% endblock %}
 {% block content %}
+<form action="" id="edit-selection-details">
+    have label, voice, etc.
+</form>
+<article id="verse-ranges">
+    <section class="verse-range">
+        <p class="verse-holder">
+            <span class="book">2 Corinthians</span>
+            <span class="chapter">4</span>
+            <span class="verse">17</span>
+            <span class="text">For our light affliction, which is but for a moment, worketh for us a far more
+                exceeding
+                and eternal weight of glory;</span>
+        </p>
+        <p class="verse-holder">
+            <span class="book">2 Corinthians</span>
+            <span class="chapter">4</span>
+            <span class="verse">18</span>
+            <span class="text">While we look not at the things which are seen, but at the things which are not seen: for
+                the things which are seen are temporal; but the things which are not seen are eternal.</span>
+        </p>
+    </section>
+</article>
 {{ ranges|json_script:"verse_ranges" }}
 {{ selection|json_script:"selection"}}
 {% endblock %}
