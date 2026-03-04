@@ -3,3 +3,27 @@ body {
     background-color: var(--b-color);
     color: white;
 }
+
+/* style the verse holder */
+.verse-holder {
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+.verse-holder :not(.text) {
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+.text {
+    flex-basis: 100%;
+}
+
+.chapter::after {
+    /* content: ':'; */
+}
+
+.verse::after {
+    /* content: ','; */
+}
