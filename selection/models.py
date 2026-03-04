@@ -29,6 +29,14 @@ class Verse(models.Model):
     # having base as the length of the vector
     # Might be able to run cosine similarity on that
 
+    def to_dict(self, version="kjv"):
+        return {
+            "book": self.book.name,
+            "chapter": self.chapter,
+            "verse": self.verse,
+            "text": getattr(self, version),
+        }
+
 
 class Selection(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
@@ -37,6 +45,15 @@ class Selection(models.Model):
     repeat = models.IntegerField()
     version = models.CharField()
     read_label = models.BooleanField(default=False)
+
+    def to_dict(self):
+        return {
+            "label": self.label,
+            "voice": self.voice,
+            "repeat": self.repeat,
+            "version": self.version,
+            "readLabel": self.read_label,
+        }
 
 
 class VerseRange(models.Model):
