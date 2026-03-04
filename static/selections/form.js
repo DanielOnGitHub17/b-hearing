@@ -13,7 +13,7 @@ const rangeTypes = ["start", "end"];
 // For elsewhere: Selections should be editted the same way they are created.
 // The form will look the same.
 // Add validation for chapter based on Book and verse based on chapter.
-function buildUI() {
+function buildUI(e) {
     // make verse range forms
     for (let rangeType of rangeTypes) {
         new VerseRangeForm(rangeType, verseRangeForms);
@@ -21,8 +21,30 @@ function buildUI() {
 
     // add button to create verse range
     add(make("button", { id: "create-verse-range", textContent: '+', type: "button" }), verseRangeForms);
+    speechSynthesis.getVoices();  // Warm up
 }
 
+function setVoices(e) {
+    if (e.target.id !== "voices") return;
+    e.stopPropagation();
+    const voices = get("voices");
+    if (voices.options.length) return; // has options set
+    const voiceObjs = speechSynthesis.getVoices().filter(voice => voice.lang === "en-US").map(voice => voice.voiceURI);
+    // if (!voiceObjs.length) setTimeout(() => setVoices(e), 500);  // Run again to add voices
+    for (const voiceURI of voiceObjs) {
+        voices.options.add(make("option", { textContent: voiceURI }));
+    }
+}
+
+function testVoice(e) {
+    if (e.target.id !== "voices") return;
+    const voices = get("voices");
+    const voice = speechSynthesis.getVoices().filter(voice => voice.voiceURI === voices.value)[0];
+    const utterance = new SpeechSynthesisUtterance(voice.voiceURI);
+    utterance.voice = voice;
+    speechSynthesis.speak(utterance);
+
+}
 
 function createVerseRange(e) {
     if (e.target.id !== "create-verse-range") return;
@@ -37,8 +59,8 @@ function createVerseRange(e) {
 }
 
 configureEvents({
-    "change": [VerseRangeForm.event],
-    "click": [createVerseRange],
+    "change": [VerseRangeForm.event, testVoice],
+    "click": [createVerseRange, setVoices],
     "load": [buildUI],
 });
 

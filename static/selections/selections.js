@@ -95,6 +95,7 @@ class VerseRangeForm {
         let verseRange;
         switch (dom.localName) {
             case "select":
+                if (dom.parentElement.parentElement.className !== "verse-range") return;
                 verseRange = dom.parentElement.parentElement.obj;
                 verseRange.chapter.max = Object.keys(books[dom.value]).length - 2;
                 break;
