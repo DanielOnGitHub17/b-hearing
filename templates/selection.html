@@ -1,6 +1,6 @@
 <!-- 
 Maybe have a UI component that you can edit a verse range by dragging on the edge as if you
-it's a window 
+it's a window that you're reducing the size of.
 -->
 {% extends "base.html" %}
 {% load static %}
@@ -10,5 +10,6 @@ it's a window
 <link rel="stylesheet" href="{% static 'selection/style.css' %}">
 {% endblock %}
 {% block content %}
-Nothing doing.
+{{ ranges|json_script:"verse_ranges" }}
+{{ selection|json_script:"selection"}}
 {% endblock %}

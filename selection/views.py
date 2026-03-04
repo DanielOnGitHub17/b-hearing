@@ -20,9 +20,20 @@ class SelectionView(LoginRequiredMixin, View):
 
     def get(self, request, id):
         selection = Selection.objects.get(id=id)
-        verses_ranges = [*VerseRange.objects.filter(selection=selection)]
-        print(verses_ranges)
-        return render(request, "selection.html", context={"ranges": verses_ranges})
+        ranges_payload = []
+        for verse_range in VerseRange.objects.filter(selection=selection):
+            verses_objs = Verse.objects.filter(
+                id__gte=verse_range.start.id, id__lte=verse_range.end.id
+            )
+            # Also get hidden and all
+            verses = [verse.to_dict(selection.version) for verse in verses_objs]
+            ranges_payload.append(verses)
+
+        return render(
+            request,
+            "selection.html",
+            context={"ranges": ranges_payload, "selection": selection.to_dict()},
+        )
 
 
 class SelectionsView(LoginRequiredMixin, View):
