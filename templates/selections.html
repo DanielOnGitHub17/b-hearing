@@ -37,5 +37,16 @@
 
 
 </form>
+<section>
+    <h3>List of selections created</h3>
+    <ul>
+        {% for selection in selections %}
+        <li><a href="{{ selection.id }}">{{ selection.label }} |
+                {{ selection.verserange_set.first.start }} ...
+                {{selection.verserange_set.last.start }}</a></li>
+        {% endfor %}
+    </ul>
+
+</section>
 <script src="{% static 'selections/form.js' %}" type="module"></script>
 {% endblock %}

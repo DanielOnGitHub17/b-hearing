@@ -71,4 +71,6 @@ class SelectionsView(LoginRequiredMixin, View):
         data = request.GET
         # Use the GET parameters to get parameters to streamline selections
         # Use page-based pagination to get selections to display
-        return render(request, "selections.html")
+        selections = Selection.objects.filter(user=request.user)
+        context = {"selections": selections}
+        return render(request, "selections.html", context)

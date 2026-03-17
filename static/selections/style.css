@@ -36,3 +36,15 @@ label {
     width: 100%;
     justify-content: space-around;
 }
+
+ul li {
+    list-style-type: none;
+    border-bottom: 2px solid white;
+    width: fit-content;
+    padding-bottom: 5px;
+}
+
+ul li a {
+    color: white;
+    text-decoration: none;
+}
