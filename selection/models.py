@@ -28,6 +28,8 @@ class Verse(models.Model):
     # Or I wonder if I can cheat mysql/sqlite with a biginteger
     # having base as the length of the vector
     # Might be able to run cosine similarity on that
+    def __str__(self):
+        return f"{self.book.name} {self.chapter}:{self.verse}"
 
     def to_dict(self, version="kjv"):
         return {
