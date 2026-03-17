@@ -1,4 +1,3 @@
-import { make } from "../util.js";
 import { books, indexBook } from "./consts.js";
 
 class Verse {

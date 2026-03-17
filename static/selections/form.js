@@ -1,3 +1,4 @@
+import { speak } from "../util.js";
 import { Verse, VerseRange, VerseRangeForm } from "./selections.js";
 
 const addVerseRange = get("add-verse-range");
@@ -39,9 +40,7 @@ function testVoice(e) {
     if (e.target.id !== "voices") return;
     const voices = get("voices");
     const voice = speechSynthesis.getVoices().filter(voice => voice.voiceURI === voices.value)[0];
-    const utterance = new SpeechSynthesisUtterance(voice.voiceURI);
-    utterance.voice = voice;
-    speechSynthesis.speak(utterance);
+    speak(voice.voiceURI, voice)
 
 }
 
