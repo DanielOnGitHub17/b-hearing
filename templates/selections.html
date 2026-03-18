@@ -43,7 +43,7 @@
         {% for selection in selections %}
         <li><a href="{{ selection.id }}">{{ selection.label }} |
                 {{ selection.verserange_set.first.start }} ...
-                {{selection.verserange_set.last.start }}</a></li>
+                {{selection.verserange_set.last.start }}</a><button type="button">Delete</button></li>
         {% endfor %}
     </ul>
 
