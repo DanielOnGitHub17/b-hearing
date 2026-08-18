@@ -2,7 +2,46 @@ body {
     --b-color: rgb(41, 41, 41);
     background-color: var(--b-color);
     color: white;
+    margin: 10px 0 0 10px;
 }
+
+/* Selection, reading information and tools */
+#edit-selection-details {
+    border: 1px solid white;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#edit-selection-details>label {
+    border-right: 1px solid white;
+    padding: 10px;
+}
+
+#edit-selection-details button {
+    padding: 10px;
+}
+
+
+/* END Selection, reading information and tools */
+
+/* verse-range styles*/
+article#verse-ranges {
+    padding: 0;
+    margin: 0
+}
+
+.verse-range {
+    border: 2px solid white;
+    padding: 5px 10px;
+    margin: 10px 0;
+    border-bottom: none;
+}
+
+/* end verse-range styles*/
+
 
 /* style the verse holder */
 .verse-holder {
