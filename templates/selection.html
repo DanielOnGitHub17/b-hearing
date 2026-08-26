@@ -10,9 +10,17 @@ it's a window that you're reducing the size of.
 <link rel="stylesheet" href="{% static 'selection/style.css' %}">
 {% endblock %}
 {% block content %}
-<form action="" id="edit-selection-details">
-    have label, voice, etc.
+<form action="" id="edit-selection-details" method="post">
+        <label for="label">Selection label: <input type="text" name="label" id="label" value="{{ selection.label }}"
+                        placeholder="{{ selection.label }}"></label>
+        <label for="repeat">Repeat <input type="number" name="repeat" id="repeat" value="{{ selection.repeat }}"
+                        placeholder="{{ selection.label }}">
+                times</label>
+        <button id="restart">Restart</button>
+        <button id="play-pause">Play</button>
+        <button id="stop">Stop</button>
 </form>
+<h2>{{ selection.label }}</h2>
 <article id="verse-ranges"></article>
 {{ ranges|json_script:"verse-ranges-obj" }}
 {{ selection|json_script:"selection"}}
