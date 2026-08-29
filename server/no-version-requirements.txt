@@ -1,4 +1,7 @@
 django
 django-rest-framework
-python-dotenv
+djangorestframework-simplejwt
+dj-rest-auth
 django-allauth
+python-dotenv
+requests

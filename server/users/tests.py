@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from server.bhearing.settings import EMAIL_BACKEND
+from bhearing.settings import EMAIL_BACKEND
 
 # Create your tests here.
 
