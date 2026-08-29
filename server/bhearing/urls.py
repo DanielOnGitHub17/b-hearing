@@ -30,5 +30,5 @@ urlpatterns = [
     path("favicon.ico", home),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
-    path("selections/", include("selection.urls")),
+    path("selections/", include("selections.urls")),
 ]
