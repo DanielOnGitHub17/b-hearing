@@ -1,4 +1,5 @@
 #!/bin/sh
+cd server
 # source ./env/Scripts/activate
 
 printf "Running checks before commit...\n\n"
