@@ -4,7 +4,7 @@ start, end relate to verses
 
 from django.db import models
 
-from users.models import User
+from server.users.models import User
 
 
 class Book(models.Model):

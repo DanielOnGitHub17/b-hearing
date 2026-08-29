@@ -1,6 +1,6 @@
 from django.urls import path
 
-from selection import views
+from server.selections import views
 
 urlpatterns = [
     path("", views.SelectionsView.as_view()),

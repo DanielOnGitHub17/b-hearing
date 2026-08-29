@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "users",
-    "selection",
+    "selections",
 ]
 
 AUTHENTICATION_BACKENDS = [
