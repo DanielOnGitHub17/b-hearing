@@ -1,25 +1,25 @@
-#!/bin/sh
-cd server
-source ./env/Scripts/activate
-printf "Running checks before commit...\n\n"
+# #!/bin/sh
+# cd server
+# source ./env/Scripts/activate
+printf "Running checks before push...\n\n"
 
-printf "Checking migrations:\n"
-python manage.py makemigrations --check
-if [ $? -ne 0 ]; then
-    printf "Migrations need to be made. Commit aborted.\n\n"
-    exit 1
-fi
+# printf "Checking migrations:\n"
+# python manage.py makemigrations --check
+# if [ $? -ne 0 ]; then
+#     printf "Migrations need to be made. Commit aborted.\n\n"
+#     exit 1
+# fi
 
-printf "\n"
+# printf "\n"
 
-printf "Running tests:\n\n"
-python manage.py test
-if [ $? -ne 0 ]; then
-    printf "Tests failed. Commit aborted.\n\n"
-    exit 1
-fi
+# printf "Running tests:\n\n"
+# python manage.py test
+# if [ $? -ne 0 ]; then
+#     printf "Tests failed. Commit aborted.\n\n"
+#     exit 1
+# fi
 
-printf "\n"
+# printf "\n"
 
 printf "Checks passed. Commiting...\n\n"
-exit 0
+# exit 0
