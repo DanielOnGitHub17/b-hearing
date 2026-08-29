@@ -1,5 +1,5 @@
 """
-Docstring for selection.populate_verses
+Docstring for selections.populate_verses
 """
 
 import json
