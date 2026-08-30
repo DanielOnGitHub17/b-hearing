@@ -1,8 +1,10 @@
-from django.urls import path
-
+from django.urls import include, path
 from selections import views
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path("", views.SelectionsView.as_view()),
-    path("<int:id>/", views.SelectionView.as_view()),
-]
+router = DefaultRouter()
+router.register(r"selections", views.SelectionViewSet, basename="selection")
+router.register(r"verseranges", views.VerseRangeViewSet, basename="verserange")
+router.register(r"users", views.UserViewSet, basename="user")
+
+urlpatterns = [path("", include(router.urls))]

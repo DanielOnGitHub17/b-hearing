@@ -1,76 +1,30 @@
 """Views for selections app"""
 
-# from django.contrib.auth.decorators import login_required
-
-from collections import defaultdict
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect, render
-from django.views import View
-
-from .models import Selection, Verse, VerseRange
+from rest_framework import viewsets, permissions
+from .models import Selection, VerseRange
+from .serializers import SelectionSerializer, VerseRangeSerializer, UserSerializer
+from users.models import User
 
 
-class SelectionView(LoginRequiredMixin, View):
-    def post(self, request, id):
-        """Edit a selection"""
-        # Todo: Use graphql to make easier
-        data = request.POST
-        return redirect(request.path)
-
-    def get(self, request, id):
-        selection = Selection.objects.get(id=id)
-        ranges_payload = []
-        for verse_range in VerseRange.objects.filter(selection=selection):
-            verses_objs = Verse.objects.filter(
-                id__gte=verse_range.start.id, id__lte=verse_range.end.id
-            )
-            # Also get hidden and all
-            verses = [verse.to_dict(selection.version) for verse in verses_objs]
-            ranges_payload.append(verses)
-
-        return render(
-            request,
-            "selection.html",
-            context={"ranges": ranges_payload, "selection": selection.to_dict()},
-        )
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
-class SelectionsView(LoginRequiredMixin, View):
-    def post(self, request):
-        """Will create a selection from the multiple VerseRanges given"""
-        # Todo: Create ModelForm for Selection verification
-        data = request.POST
-        options = {"start": [], "end": []}
-        props = ["book", "chapter", "verse"]
+class SelectionViewSet(viewsets.ModelViewSet):
+    queryset = Selection.objects.all()
+    serializer_class = SelectionSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-        for range_type, vals in options.items():
-            for opt_vals in zip(
-                *[data.getlist(f"{range_type}_{prop}") for prop in props]
-            ):
-                vals.append(dict(zip(props, opt_vals)))
+    def get_queryset(self):
+        return Selection.objects.filter(owner=self.request.user)
 
-        new_selection = Selection(
-            user=request.user,
-            label=data.get("label"),
-            repeat=data.get("repeat"),
-            version=data.get("version"),
-        )
-        new_selection.save()
 
-        for starts, ends in zip(*options.values()):
-            VerseRange(
-                start=Verse.objects.get(**starts),
-                end=Verse.objects.get(**ends),
-                selection=new_selection,
-            ).save()
+class VerseRangeViewSet(viewsets.ModelViewSet):
+    queryset = VerseRange.objects.all()
+    serializer_class = VerseRangeSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-        return redirect(f"/selections/{new_selection.id}/")
-
-    def get(self, request):
-        data = request.GET
-        # Use the GET parameters to get parameters to streamline selections
-        # Use page-based pagination to get selections to display
-        selections = Selection.objects.filter(user=request.user)
-        context = {"selections": selections}
-        return render(request, "selections.html", context)
+    def list(self, request, *args, **kwargs):
+        return None

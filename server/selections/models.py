@@ -1,9 +1,6 @@
-"""Data Entities for Bible Hearing app
-start, end relate to verses
-"""
+"""Data Entities for Bible Hearing app"""
 
 from django.db import models
-
 from users.models import User
 
 
@@ -15,7 +12,7 @@ class Book(models.Model):
 
 
 class Verse(models.Model):
-    book = models.ForeignKey(to=Book, on_delete=models.CASCADE, default=None)
+    book = models.ForeignKey(to=Book, on_delete=models.CASCADE, related_name="verses")
     chapter = models.IntegerField(default=0)
     verse = models.IntegerField(default=0)
     kjv = models.CharField(verbose_name="King James Version")
@@ -31,7 +28,7 @@ class Verse(models.Model):
     def __str__(self):
         return f"{self.book.name} {self.chapter}:{self.verse}"
 
-    def to_dict(self, version="kjv"):
+    def to_dict(self, version: str = "kjv") -> dict[str, int | str]:
         return {
             "book": self.book.name,
             "chapter": self.chapter,
@@ -41,12 +38,16 @@ class Verse(models.Model):
 
 
 class Selection(models.Model):
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name="selections"
+    )
     label = models.CharField(unique=True)
     voice = models.CharField(default="default")
     repeat = models.IntegerField()
     version = models.CharField()
     read_label = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def to_dict(self):
         return {
@@ -59,20 +60,24 @@ class Selection(models.Model):
 
 
 class VerseRange(models.Model):
-    start = models.ForeignKey(
-        to=Verse, on_delete=models.CASCADE, related_name="start_range"
+    selection = models.ForeignKey(
+        to=Selection, on_delete=models.CASCADE, related_name="verse_ranges"
     )
-    end = models.ForeignKey(
-        to=Verse, on_delete=models.CASCADE, related_name="end_range"
+    start_verse = models.ForeignKey(
+        to=Verse, on_delete=models.CASCADE, related_name="start_verse_ranges"
     )
-    selection = models.ForeignKey(to=Selection, on_delete=models.CASCADE)
+    end_verse = models.ForeignKey(
+        to=Verse, on_delete=models.CASCADE, related_name="end_verse_ranges"
+    )
 
 
-class Hidden(models.Model):
-    hidden = models.ForeignKey(to=VerseRange, on_delete=models.CASCADE)
-    start = models.ForeignKey(
-        to=Verse, on_delete=models.CASCADE, related_name="start_hidden"
+class HiddenRange(models.Model):
+    verse_range = models.ForeignKey(
+        to=VerseRange, on_delete=models.CASCADE, related_name="hidden_ranges"
     )
-    end = models.ForeignKey(
-        to=Verse, on_delete=models.CASCADE, related_name="end_hidden"
+    start_verse = models.ForeignKey(
+        to=Verse, on_delete=models.CASCADE, related_name="start_hidden_ranges"
+    )
+    end_verse = models.ForeignKey(
+        to=Verse, on_delete=models.CASCADE, related_name="end_hidden_ranges"
     )

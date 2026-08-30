@@ -28,7 +28,7 @@ from django.urls import include, path
 urlpatterns = [
     path("", home),
     path("favicon.ico", home),
-    path("admin/", admin.site.urls),
-    path("accounts/", include("allauth.urls")),
-    path("selections/", include("selections.urls")),
+    # path("admin/", admin.site.urls),
+    # path("accounts/", include("allauth.urls")),
+    path("", include("selections.urls")),
 ]
