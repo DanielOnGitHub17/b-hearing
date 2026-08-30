@@ -5,7 +5,7 @@ from users.models import User
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     selections = serializers.HyperlinkedRelatedField(
-        many=True, view_name="selection-list", read_only=True
+        many=True, view_name="selection-detail", read_only=True
     )
 
     class Meta:

@@ -20,6 +20,9 @@ class SelectionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Selection.objects.filter(owner=self.request.user)
 
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
+
 
 class VerseRangeViewSet(viewsets.ModelViewSet):
     queryset = VerseRange.objects.all()
