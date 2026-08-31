@@ -44,7 +44,7 @@ class AudioSource(models.Model):
     """
 
     url_template = models.CharField()
-    name = models.CharField(default="")
+    name = models.CharField()
     default_offset = models.IntegerField(default=0)
     version = models.CharField(default="King James Version")
     version_abbr = models.CharField(default="KJV")
@@ -91,7 +91,11 @@ class Selection(models.Model):
         to=User, on_delete=models.CASCADE, related_name="selections"
     )
     audio_source = models.ForeignKey(
-        to=AudioSource, on_delete=models.PROTECT, default=None
+        to=AudioSource,
+        on_delete=models.PROTECT,
+        default=None,
+        null=True,
+        blank=True,
     )
     label = models.CharField(unique=True)
     browser_voice = models.CharField(default="default")
