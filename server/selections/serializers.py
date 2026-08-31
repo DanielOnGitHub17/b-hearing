@@ -47,6 +47,10 @@ class SelectionListSerializer(serializers.ModelSerializer):
 class SelectionDetailSerializer(SelectionListSerializer):
     verse_ranges = VerseRangeSerializer(many=True, read_only=True)
 
+    class Meta:
+        model = Selection
+        fields = SelectionListSerializer.Meta.fields + ["verse_ranges"]
+
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     selections = serializers.HyperlinkedRelatedField(
