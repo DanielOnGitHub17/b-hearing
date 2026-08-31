@@ -98,7 +98,7 @@ class Selection(models.Model):
         to=AudioSource, on_delete=models.PROTECT, default=None
     )
     label = models.CharField(unique=True)
-    voice = models.CharField(default="default")
+    browser_voice = models.CharField(default="default")
     repeat = models.IntegerField()
     version = models.CharField()
     read_label = models.BooleanField(default=False)
