@@ -88,4 +88,14 @@ Output:
         [],
     ],
 ]
+
+Then find and replace
+",\n *"([a-z .])
+with
+  $1
+
+on vs code on the connected verses that don't have a label.
+There should be 126 of them
+
+The rest are book headers or AKAs
 """
