@@ -14,6 +14,7 @@ from .models import Book, Verse
 # kjv verses = 31170
 
 # Get chapter endings of all bible chapters. Then split the text and create database rows as needed.
+# pg = project gutenburg
 
 
 SPLIT_VERSE = re.compile("[0-9]+:[0-9]+")
@@ -22,7 +23,7 @@ SPLIT_VERSE = re.compile("[0-9]+:[0-9]+")
 def process_pg_json():
     bible = {}
     verse_counts = {}
-    with open(r"..\b-hearing\bible-data\kjv.json") as bible_file:
+    with open(r"bible-data\kjv.json") as bible_file:
         data = json.load(bible_file)
 
     for book_index, book in enumerate(data):
@@ -48,12 +49,10 @@ def process_pg_json():
 
         verse_counts[BOOKS[book_index]][chapter_no] = verse_no
 
-    with open(r"..\b-hearing\bible-data\kjv_curated.json", "w") as bible_file:
+    with open(r"bible-data\kjv_curated.json", "w") as bible_file:
         json.dump(bible, bible_file)
 
-    with open(
-        r"..\b-hearing\bible-data\kjv_verse_counts.json", "w"
-    ) as verse_count_file:
+    with open(r"bible-data\kjv_verse_counts.json", "w") as verse_count_file:
         json.dump(verse_counts, verse_count_file)
 
 
