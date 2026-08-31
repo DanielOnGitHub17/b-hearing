@@ -10,6 +10,5 @@ class TestInitDB(TestCase):
         pass
         # self.assertIsNone(
         #     init_bible_db(
-        #         "kjv", r"C:\Users\enesi\Code\b-hearing\bible-data\kjv_curated.json"
         #     )
         # )
