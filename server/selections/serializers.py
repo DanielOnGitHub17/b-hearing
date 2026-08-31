@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Selection, VerseRange, Verse
+from .models import (
+    Selection,
+    VerseRange,
+    Verse,
+    AudioSourceSuggestion,
+    AudioOffsetSuggestion,
+)
 from users.models import User
 
 
@@ -9,8 +15,16 @@ class VerseSerializer(serializers.ModelSerializer):
         fields = ["book", "chapter", "verse", "kjv"]
 
 
-class AudioOffsetLinkerSerializer(serializers.ModelSerializer):
-    pass
+class AudioSourceSesrializer(serializers.ModelSerializer):
+    class Meta:
+        model = AudioSourceSuggestion
+        fields = ["url_template", "name", "version", "version_abbr"]
+
+
+class AudioOffsetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AudioOffsetSuggestion
+        fields = ["source", "verse"]
 
 
 class VerseRangeSerializer(serializers.ModelSerializer):
