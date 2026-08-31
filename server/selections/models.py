@@ -1,5 +1,6 @@
 """Data Entities for Bible Hearing app"""
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from users.models import User
 
@@ -118,7 +119,21 @@ class VerseRange(models.Model):
     )
     position = models.IntegerField(default=0)
 
+    def clean(self):
+        super().clean()
+        start_verse_id = getattr(self, "start_verse_id", None)
+        end_verse_id = getattr(self, "end_verse_id", None)
+
+        if start_verse_id is not None and end_verse_id is not None:
+            if start_verse_id > end_verse_id:
+                raise ValidationError(
+                    {
+                        "start_verse": "'start_verse' must be less than or equal to 'end_verse'."
+                    }
+                )
+
     def save(self, *args, **kwargs):
+        self.full_clean()
         if not self.pk and not self.position:
             last_position = VerseRange.objects.filter(selection=self.selection).count()
             self.position = last_position + 1
