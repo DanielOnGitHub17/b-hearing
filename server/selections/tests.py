@@ -1,13 +1,17 @@
+from typing import Any, cast
+
 from django.test import TestCase
 
 from users.models import User
 from .models import Book, Selection, Verse, VerseRange
-from .serializers import SelectionSerializer
+from .serializers import SelectionDetailSerializer
 
 
 class TestInitDB(TestCase):
     def test_selection_serializer_serializes_verse_ranges(self):
-        user = User.objects.create_user(email="owner@example.com", password="secret")
+        user = User.objects.create_user(  # type: ignore[attr-defined]
+            email="owner@example.com", password="secret"
+        )
         book = Book.objects.create(
             number=1, name="Genesis", abbreviation="Gen", description="test"
         )
@@ -38,10 +42,12 @@ class TestInitDB(TestCase):
             end_verse=end_verse,
         )
 
-        serializer = SelectionSerializer(selection)
-        data = serializer.data
+        serializer = SelectionDetailSerializer(selection)
+        data = cast(dict[str, Any], serializer.data)
+        verse_ranges = cast(list[dict[str, Any]], data["verse_ranges"])
+        verse_range = verse_ranges[0]
 
         self.assertEqual(data["label"], "Test selection")
-        self.assertEqual(len(data["verse_ranges"]), 1)
-        self.assertEqual(data["verse_ranges"][0]["start_verse"], start_verse.id)
-        self.assertEqual(data["verse_ranges"][0]["end_verse"], end_verse.id)
+        self.assertEqual(len(verse_ranges), 1)
+        self.assertEqual(verse_range["start_verse"], int(start_verse.pk))
+        self.assertEqual(verse_range["end_verse"], int(end_verse.pk))
