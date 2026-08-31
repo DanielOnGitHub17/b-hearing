@@ -37,9 +37,65 @@ class Verse(models.Model):
         }
 
 
+class AudioSource(models.Model):
+    """
+    https://openbible.com/audio/kjv/KJV_01_Gen_001.mp3 - check and see how to format well
+    https://www.wordpocket.org/bibles/app/audio/1/43/14.mp3
+    Example url_template
+    url_template = "https://somebiblesite.org/audio/moreslug/%(book_name_abbr)s/%(book_no)s/%(chapter_no)s.<ext>"
+
+    For example:
+    for the first url it should be
+    https::/openbible.com/audio/kjv/KJV_%(book_no)s_%(book_name_abbr)_%(chapter_no)s.mp3
+    For the second it would be
+    https://www.wordpocket.org/bibles/app/audio/1/%(book_no)s/%(chapter_no)s.mp3
+    """
+
+    url_template = models.CharField()
+    name = models.CharField(default="")
+    base_offset = models.IntegerField(default=0)
+    version = models.CharField(default="King James Version")
+    version_abbr = models.CharField(default="KJV")
+
+    def form_url(
+        self, book_no: str | int, chapter_no: str | int, book_name_abbr: str
+    ) -> str:
+        return self.url_template % {
+            "book_name_abbr": book_name_abbr,
+            "book_no": book_no,
+            "chapter_no": chapter_no,
+        }
+
+
+class AudioOffset(models.Model):
+    source = models.ForeignKey(to=AudioSource, on_delete=models.CASCADE)
+    verse = models.ForeignKey(to=Verse, on_delete=models.PROTECT)
+
+
+"""
+The API will map to these 
+- AudioSourceSuggestion
+- AudioOffsetSuggestion
+
+So people can suggest where the verse starts in the audio
+Then later on I can take averages, notice outliers, then push an update that is consistent
+"""
+
+
+class AudioSourceSuggestion(AudioSource):
+    pass
+
+
+class AudioOffsetSuggestion(AudioOffset):
+    pass
+
+
 class Selection(models.Model):
     owner = models.ForeignKey(
         to=User, on_delete=models.CASCADE, related_name="selections"
+    )
+    audio_source = models.ForeignKey(
+        to=AudioSource, on_delete=models.PROTECT, default=None
     )
     label = models.CharField(unique=True)
     voice = models.CharField(default="default")
