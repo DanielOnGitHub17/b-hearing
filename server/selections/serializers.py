@@ -9,12 +9,16 @@ class VerseSerializer(serializers.ModelSerializer):
         fields = ["book", "chapter", "verse", "kjv"]
 
 
+class AudioOffsetLinkerSerializer(serializers.ModelSerializer):
+    pass
+
+
 class VerseRangeSerializer(serializers.ModelSerializer):
     verses = serializers.SerializerMethodField()
 
     class Meta:
         model = VerseRange
-        fields = ["id", "selection", "start_verse", "end_verse", "verses"]
+        fields = ["id", "position", "selection", "start_verse", "end_verse", "verses"]
 
     def get_verses(self, obj):
         verses_start_to_end = Verse.objects.filter(
@@ -36,7 +40,8 @@ class SelectionListSerializer(serializers.ModelSerializer):
             "id",
             "owner",
             "label",
-            "voice",
+            "browser_voice",
+            "audio_source",
             "repeat",
             "version",
             "read_label",

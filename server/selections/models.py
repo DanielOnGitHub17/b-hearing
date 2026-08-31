@@ -28,14 +28,6 @@ class Verse(models.Model):
     def __str__(self):
         return f"{self.book.name} {self.chapter}:{self.verse}"
 
-    def to_dict(self, version: str = "kjv") -> dict[str, int | str]:
-        return {
-            "book": self.book.name,
-            "chapter": self.chapter,
-            "verse": self.verse,
-            "text": getattr(self, version),
-        }
-
 
 class AudioSource(models.Model):
     """
@@ -53,7 +45,7 @@ class AudioSource(models.Model):
 
     url_template = models.CharField()
     name = models.CharField(default="")
-    base_offset = models.IntegerField(default=0)
+    default_offset = models.IntegerField(default=0)
     version = models.CharField(default="King James Version")
     version_abbr = models.CharField(default="KJV")
 
@@ -68,8 +60,12 @@ class AudioSource(models.Model):
 
 
 class AudioOffset(models.Model):
-    source = models.ForeignKey(to=AudioSource, on_delete=models.CASCADE)
-    verse = models.ForeignKey(to=Verse, on_delete=models.PROTECT)
+    source = models.ForeignKey(
+        to=AudioSource, on_delete=models.CASCADE, related_name="audio_offsets"
+    )
+    verse = models.ForeignKey(
+        to=Verse, on_delete=models.PROTECT, related_name="audio_offsets"
+    )
 
 
 """
@@ -105,15 +101,6 @@ class Selection(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-    def to_dict(self):
-        return {
-            "label": self.label,
-            "voice": self.voice,
-            "repeat": self.repeat,
-            "version": self.version,
-            "readLabel": self.read_label,
-        }
-
 
 class VerseRange(models.Model):
     selection = models.ForeignKey(
@@ -125,6 +112,13 @@ class VerseRange(models.Model):
     end_verse = models.ForeignKey(
         to=Verse, on_delete=models.CASCADE, related_name="end_verse_ranges"
     )
+    position = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.position:
+            last_position = VerseRange.objects.filter(selection=self.selection).count()
+            self.position = last_position + 1
+        super().save(*args, **kwargs)
 
 
 class HiddenRange(models.Model):
