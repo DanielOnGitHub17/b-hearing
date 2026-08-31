@@ -28,7 +28,7 @@ class TestInitDB(TestCase):
         selection = Selection.objects.create(
             owner=user,
             label="Test selection",
-            voice="default",
+            browser_voice="default",
             repeat=1,
             version="kjv",
         )
