@@ -92,6 +92,6 @@ def init_bible_verses(src_path):
 
 if __name__ == "__main__":
     process_pg_json()
-    # init_bible_db("kjv", r"C:\Users\enesi\Code\b-hearing\bible-data\kjv_curated.json")
+    # init_bible_db("kjv", CURATED_JSON_PATH)
     # start 2:58, end = 3:02:53
-    # 65 1189 31081 - should be 31102! missing 21
+    # TIme taken for init_bible_db: 124.3229751586914
